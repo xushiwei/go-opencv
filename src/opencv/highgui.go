@@ -17,8 +17,8 @@ package opencv
 
 // trackbar data
 struct TrackbarUserdata {
-	schar* win_name;
-	schar* bar_name;
+	char* win_name;
+	char* bar_name;
 	int value;
 };
 static struct TrackbarUserdata *trackbar_list[1000];
@@ -26,7 +26,7 @@ static int trackbar_list_len = 0;
 
 static void trackbarCallback(int pos, void* userdata)
 {
-	extern void goTrackbarCallback(schar* pbarName0, schar* winName1, int pos);
+	extern void goTrackbarCallback(char* pbarName0, char* winName1, int pos);
 
 	struct TrackbarUserdata *arg = (struct TrackbarUserdata*)userdata;
 	goTrackbarCallback(arg->bar_name, arg->win_name, pos);
@@ -36,11 +36,11 @@ static int CreateTrackbar(
 	int value, int count
 )
 {
-	struct TrackbarUserdata *userdata = malloc(sizeof(*userdata));
+	struct TrackbarUserdata *userdata = malloc(sizeof(struct TrackbarUserdata));
 	trackbar_list[trackbar_list_len++] = userdata;
 
-	userdata->win_name = (schar*)window_name;
-	userdata->bar_name = (schar*)trackbar_name;
+	userdata->win_name = window_name;
+	userdata->bar_name = trackbar_name;
 	userdata->value = value;
 
 	return cvCreateTrackbar2(trackbar_name, window_name,
@@ -67,9 +67,9 @@ static void DestroyTrackbar(char* trackbar_name, char* window_name)
 
 static void mouseCallback(int event, int x, int y, int flags, void* param)
 {
-	extern void goMouseCallback(schar* name, int event, int x, int y, int flags);
+	extern void goMouseCallback(char* name, int event, int x, int y, int flags);
 
-	schar* name = (schar*)param;
+	char* name = (char*)param;
 	goMouseCallback(name, event, x, y, flags);
 }
 static void SetMouseCallback(const char* window_name)
@@ -80,7 +80,7 @@ static void SetMouseCallback(const char* window_name)
 //-----------------------------------------------------------------------------
 
 // video writer args
-unsigned CV_FOURCC_(int c1, int c2, int c3, int c4) {
+static unsigned CV_FOURCC_(int c1, int c2, int c3, int c4) {
 	return (unsigned)CV_FOURCC(c1,c2,c3,c4);
 }
 
@@ -195,13 +195,14 @@ func NewWindow(name string, flags ...int) *Window {
 }
 
 // ---------  YV ---------
+/* Set and Get Property of the window */
+/*
 const (
 	CV_WND_PROP_FULLSCREEN = int(C.CV_WND_PROP_FULLSCREEN)
 	CV_WND_PROP_AUTOSIZE   = int(C.CV_WND_PROP_AUTOSIZE)
 	CV_WINDOW_NORMAL       = int(C.CV_WINDOW_NORMAL)
 	CV_WINDOW_FULLSCREEN   = int(C.CV_WINDOW_FULLSCREEN)
 )
-/* Set and Get Property of the window */
 func (win *Window)SetProperty(prop_id int, value float64)  {
 	C.cvSetWindowProperty(win.name_c, C.int(prop_id), C.double(value))
 }
@@ -209,6 +210,7 @@ func (win *Window)GetProperty(prop_id int) float64 {
 	rv := C.cvGetWindowProperty(win.name_c, C.int(prop_id))
 	return float64(rv)
 }
+*/
 
 /* display image within window (highgui windows remember their content) */
 func (win *Window)ShowImage(image *IplImage)  {
@@ -535,7 +537,7 @@ const (
     
 	CV_CAP_DSHOW    = int(C.CV_CAP_DSHOW)	// DirectShow (via videoInput)
     
-	CV_CAP_PVAPI    = int(C.CV_CAP_PVAPI)	// PvAPI, Prosilica GigE SDK
+//	CV_CAP_PVAPI    = int(C.CV_CAP_PVAPI)	// PvAPI, Prosilica GigE SDK
 )
 
 /* start capturing frames from camera: index = camera_index + domain_offset (CV_CAP_*) */

@@ -10,10 +10,6 @@ package opencv
 #include <opencv/cvaux.h>
 #include <stdlib.h>
 #include <string.h>
-
-const char* CV_VERSION_() {
-	return CV_VERSION;
-}
 */
 import "C"
 
