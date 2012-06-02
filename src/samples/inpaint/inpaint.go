@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	filename := "./fruits.jpg"
+	filename := "../fruits.jpg"
 	if len(os.Args) == 2 {
 		filename = os.Args[1]
 	}
